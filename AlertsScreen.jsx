@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { AlertTriangle, Zap, Info, CheckCircle2 } from "lucide-react"
 
 function AlertsScreen({ predictions, workOrders }) {
   const [activeFilter, setActiveFilter] = useState("All")
@@ -11,7 +12,7 @@ function AlertsScreen({ predictions, workOrders }) {
         title: "Failure predicted",
         sub: p.name + " (" + p.id + ")",
         type: "High Risk",
-        icon: "⚠️",
+        icon: <AlertTriangle size={16} />,
         iconColor: "red",
         time: "2 min ago",
         detail: p.failureRisk + "% failure risk · est. " + p.predictedDays + " days until failure"
@@ -23,7 +24,7 @@ function AlertsScreen({ predictions, workOrders }) {
         title: "Performance dropping",
         sub: p.name + " (" + p.id + ")",
         type: "Attention",
-        icon: "⚡",
+        icon: <Zap size={16} />,
         iconColor: "amber",
         time: "15 min ago",
         detail: "Routine anomaly detected · monitoring advised"
@@ -33,7 +34,7 @@ function AlertsScreen({ predictions, workOrders }) {
       title: "Sensor reconnected",
       sub: "Main Elevator (LIFT-001)",
       type: "Info",
-      icon: "ℹ️",
+      icon: <Info size={16} />,
       iconColor: "blue",
       time: "1 hour ago",
       detail: "Sensor back online after brief connectivity loss"
@@ -56,7 +57,7 @@ function AlertsScreen({ predictions, workOrders }) {
 
       <div className="kpi-grid" style={{ marginBottom: "20px" }}>
         <div className="kpi-card">
-          <div className="kpi-icon red">🔔</div>
+          <div className="kpi-icon red"><AlertTriangle size={18} /></div>
           <div>
             <div className="kpi-label">High Risk</div>
             <div className="kpi-value" style={{ color: "#DC2626" }}>{highRisk}</div>
@@ -64,7 +65,7 @@ function AlertsScreen({ predictions, workOrders }) {
           </div>
         </div>
         <div className="kpi-card">
-          <div className="kpi-icon amber">⚡</div>
+          <div className="kpi-icon amber"><Zap size={18} /></div>
           <div>
             <div className="kpi-label">Attention</div>
             <div className="kpi-value" style={{ color: "#D97706" }}>{attention}</div>
@@ -72,7 +73,7 @@ function AlertsScreen({ predictions, workOrders }) {
           </div>
         </div>
         <div className="kpi-card">
-          <div className="kpi-icon blue">ℹ️</div>
+          <div className="kpi-icon blue"><Info size={18} /></div>
           <div>
             <div className="kpi-label">Information</div>
             <div className="kpi-value" style={{ color: "#2563EB" }}>{info}</div>
@@ -80,7 +81,7 @@ function AlertsScreen({ predictions, workOrders }) {
           </div>
         </div>
         <div className="kpi-card">
-          <div className="kpi-icon green">✅</div>
+          <div className="kpi-icon green"><CheckCircle2 size={18} /></div>
           <div>
             <div className="kpi-label">Total Alerts</div>
             <div className="kpi-value">{alerts.length}</div>

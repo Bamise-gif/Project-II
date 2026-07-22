@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts"
+import { Thermometer, Activity, Zap, Clock } from "lucide-react"
 
 function EquipmentScreen({ predictions, workOrders, onViewEquipment, selectedEquipment, addWorkOrder }) {
   const [selected, setSelected] = useState(selectedEquipment || null)
@@ -101,28 +102,28 @@ function EquipmentScreen({ predictions, workOrders, onViewEquipment, selectedEqu
 
               <div className="kpi-grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "14px" }}>
                 <div className="kpi-card" style={{ padding: "12px" }}>
-                  <div className="kpi-icon blue" style={{ width: 32, height: 32, fontSize: 14 }}>🌡</div>
+                  <div className="kpi-icon blue" style={{ width: 32, height: 32, fontSize: 14 }}><Thermometer size={18} /></div>
                   <div>
                     <div className="kpi-label">Temperature</div>
                     <div className="kpi-value" style={{ fontSize: "18px" }}>{selected.temperature}°C</div>
                   </div>
                 </div>
                 <div className="kpi-card" style={{ padding: "12px" }}>
-                  <div className="kpi-icon amber" style={{ width: 32, height: 32, fontSize: 14 }}>📳</div>
+                  <div className="kpi-icon amber" style={{ width: 32, height: 32, fontSize: 14 }}><Activity size={18} /></div>
                   <div>
                     <div className="kpi-label">Vibration</div>
                     <div className="kpi-value" style={{ fontSize: "18px" }}>{selected.vibration}</div>
                   </div>
                 </div>
                 <div className="kpi-card" style={{ padding: "12px" }}>
-                  <div className="kpi-icon green" style={{ width: 32, height: 32, fontSize: 14 }}>⚡</div>
+                  <div className="kpi-icon green" style={{ width: 32, height: 32, fontSize: 14 }}><Zap size={18} /></div>
                   <div>
                     <div className="kpi-label">Current</div>
                     <div className="kpi-value" style={{ fontSize: "18px" }}>{selected.current_draw}A</div>
                   </div>
                 </div>
                 <div className="kpi-card" style={{ padding: "12px" }}>
-                  <div className="kpi-icon red" style={{ width: 32, height: 32, fontSize: 14 }}>⏱</div>
+                  <div className="kpi-icon red" style={{ width: 32, height: 32, fontSize: 14 }}><Clock size={18} /></div>
                   <div>
                     <div className="kpi-label">Est. Failure</div>
                     <div className="kpi-value" style={{ fontSize: "18px" }}>{selected.predictedDays}d</div>

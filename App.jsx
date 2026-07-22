@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { Menu, X, Bell,Settings} from "lucide-react"
 import LoginScreen from "./LoginScreen"
 import DashboardScreen from "./DashboardScreen"
 import EquipmentScreen from "./EquipmentScreen"
@@ -8,6 +9,10 @@ import AlertsScreen from "./AlertsScreen"
 import MaintenanceScreen from "./MaintenanceScreen"
 import ReportsScreen from "./ReportsScreen"
 import SettingsScreen from "./SettingsScreen"
+import Sidebar from "./Sidebar"
+import Header  from "./Header"
+import logo from "./images/logo.png"
+//central controller for the entire application, managing state and routing between different sections of the app.
 
 const equipmentMeta = [
   { id: "AC-001", name: "Library AC Unit", location: "Main Library", age_years: 5, days_since_maintenance: 15 },
@@ -26,6 +31,19 @@ function App() {
   const [predictions, setPredictions] = useState([])
   const [sensorReadings, setSensorReadings] = useState([])
   const [equipmentList, setEquipmentList] = useState(equipmentMeta)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 900) {
+        setIsSidebarOpen(false)
+      }
+    }
+
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
 
   useEffect(() => {
     if (!currentUser) return
@@ -146,6 +164,11 @@ function App() {
     return null
   }
 
+  const handleNavigate = (section) => {
+    setCurrentSection(section)
+    setIsSidebarOpen(false)
+  }
+
   const sharedProps = {
     predictions: predictions,
     workOrders: workOrders,
@@ -155,10 +178,10 @@ function App() {
     addWorkOrder: addWorkOrder,
     completeWorkOrder: completeWorkOrder,
     addReport: addReport,
-    onNavigate: setCurrentSection,
+    onNavigate: handleNavigate,
     onViewEquipment: function(eq) {
       setSelectedEquipment(eq)
-      setCurrentSection("equipment")
+      handleNavigate("equipment")
     }
   }
 
@@ -176,62 +199,51 @@ function App() {
 
   return (
     <div className="app-shell">
-      <div className="sidebar">
-        <div className="brand">
-          <div className="logo-icon">🏛</div>
-          <div className="brand-text">
-            <div className="name">Smart University</div>
-            <div className="sub">Facility Predictive Maintenance</div>
-          </div>
-        </div>
-        <div className="sidebar-nav">
-          <a className={currentSection === "dashboard" ? "active" : ""} onClick={() => setCurrentSection("dashboard")}>
-            <span className="nav-icon">🏠</span> Dashboard
-          </a>
-          <a className={currentSection === "equipment" ? "active" : ""} onClick={() => setCurrentSection("equipment")}>
-            <span className="nav-icon">🖥</span> Equipment
-          </a>
-          <a className={currentSection === "monitoring" ? "active" : ""} onClick={() => setCurrentSection("monitoring")}>
-            <span className="nav-icon">📡</span> Live Monitoring
-          </a>
-          <a className={currentSection === "predictions" ? "active" : ""} onClick={() => setCurrentSection("predictions")}>
-            <span className="nav-icon">📈</span> Predictions
-          </a>
-          <a className={currentSection === "alerts" ? "active" : ""} onClick={() => setCurrentSection("alerts")}>
-            <span className="nav-icon">🔔</span> Alerts
-          </a>
-          <a className={currentSection === "maintenance" ? "active" : ""} onClick={() => setCurrentSection("maintenance")}>
-            <span className="nav-icon">🔧</span> Maintenance
-          </a>
-          <a className={currentSection === "reports" ? "active" : ""} onClick={() => setCurrentSection("reports")}>
-            <span className="nav-icon">📄</span> Reports
-          </a>
-          <a className={currentSection === "settings" ? "active" : ""} onClick={() => setCurrentSection("settings")}>
-            <span className="nav-icon">⚙️</span> Settings
-          </a>
-          <a onClick={() => setCurrentUser(null)} style={{ color: "#DC2626" }}>
-            <span className="nav-icon">🚪</span> Logout
-          </a>
-        </div>
-        <div className="foot">© 2025 Smart University</div>
-      </div>
+      <div
+        className={`sidebar-overlay ${isSidebarOpen ? "show" : ""}`}
+        onClick={() => setIsSidebarOpen(false)}
+      />
+
+      <Sidebar
+        currentSection={currentSection}
+        onNavigate={handleNavigate}
+        onLogout={() => {
+          setCurrentUser(null)
+          setIsSidebarOpen(false)
+        }}
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+      />
 
       <div className="main-area">
         <div className="topbar">
-          <div>
+          <div className="topbar-left">
+            <img src={logo} alt="Logo" className="topbar-logo" />
+            <button
+              type="button"
+              className="hamburger-btn"
+              onClick={() => setIsSidebarOpen((prev) => !prev)}
+              aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isSidebarOpen}
+            >
+              {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
             <div className="page-title">
               {currentSection === "dashboard" && "Dashboard"}
-              {currentSection === "equipment" && "Equipment"}
-              {currentSection === "monitoring" && "Live Monitoring"}
-              {currentSection === "predictions" && "Predictions"}
-              {currentSection === "alerts" && "Alerts"}
-              {currentSection === "maintenance" && "Maintenance"}
+              {currentSection === "equipment" && "Project"}
+              {currentSection === "monitoring" && "Insights"}
+              {currentSection === "predictions" && "Analysis"}
+              {currentSection === "alerts" && "Document"}
+              {currentSection === "maintenance" && "Time Tracker"}
               {currentSection === "reports" && "Reports"}
-              {currentSection === "settings" && "Settings"}
+              {currentSection === "settings" && "Setting"}
             </div>
           </div>
           <div className="right">
-            <div className="notif-btn">🔔<span className="dot"></span></div>
+            <button type="button" className="notif-btn" aria-label="Notifications">
+              <Bell size={18} />
+              <span className="dot"></span>
+            </button>
             <div className="admin-badge">
               <div className="admin-avatar">A</div>
               {currentUser.username} ▾
@@ -245,5 +257,6 @@ function App() {
     </div>
   )
 }
+
 
 export default App

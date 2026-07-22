@@ -187,8 +187,8 @@ function SettingsScreen({ currentUser }) {
           </div>
 
           {saved && (
-            <div style={{ background: "#F0FDF4", border: "1px solid #16A34A", borderRadius: "8px", padding: "12px 16px", marginBottom: "12px", color: "#16A34A", fontWeight: 600, fontSize: "13.5px" }}>
-              ✅ Settings saved successfully
+            <div style={{ background: "#F0FDF4", border: "1px solid #16A34A", borderRadius: "8px", padding: "12px 16px", marginBottom: "12px", color: "#16A34A", fontWeight: 600, fontSize: "13.5px", display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <CheckCircle2 size={18} /> Settings saved successfully
             </div>
           )}
           <button className="btn btn-primary" style={{ width: "100%", justifyContent: "center" }} onClick={handleSave}>

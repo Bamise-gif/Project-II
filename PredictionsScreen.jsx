@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts"
+import { CheckCircle2, Zap, AlertTriangle, XCircle } from "lucide-react"
 
 function PredictionsScreen({ predictions, addWorkOrder }) {
   const [selected, setSelected] = useState(null)
@@ -48,15 +49,15 @@ function PredictionsScreen({ predictions, addWorkOrder }) {
             <div style={{ fontSize: "12px", color: "#6B7280" }}>Total Equipment</div>
           </div>
           <div style={{ textAlign: "center", padding: "14px 20px", background: "#F0FDF4", borderRadius: "10px", minWidth: "100px" }}>
-            <div style={{ fontSize: "28px", fontWeight: 700, color: "#16A34A" }}>✅ {healthy}</div>
+            <div style={{ fontSize: "28px", fontWeight: 700, color: "#16A34A", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}><CheckCircle2 size={24} />{healthy}</div>
             <div style={{ fontSize: "12px", color: "#6B7280" }}>Healthy</div>
           </div>
           <div style={{ textAlign: "center", padding: "14px 20px", background: "#FFFBEB", borderRadius: "10px", minWidth: "100px" }}>
-            <div style={{ fontSize: "28px", fontWeight: 700, color: "#D97706" }}>⚠️ {attention}</div>
+            <div style={{ fontSize: "28px", fontWeight: 700, color: "#D97706", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}><Zap size={24} />{attention}</div>
             <div style={{ fontSize: "12px", color: "#6B7280" }}>Need Attention</div>
           </div>
           <div style={{ textAlign: "center", padding: "14px 20px", background: "#FEF2F2", borderRadius: "10px", minWidth: "100px" }}>
-            <div style={{ fontSize: "28px", fontWeight: 700, color: "#DC2626" }}>🚨 {highRisk}</div>
+            <div style={{ fontSize: "28px", fontWeight: 700, color: "#DC2626", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}><AlertTriangle size={24} />{highRisk}</div>
             <div style={{ fontSize: "12px", color: "#6B7280" }}>High Risk</div>
           </div>
         </div>
@@ -121,7 +122,7 @@ function PredictionsScreen({ predictions, addWorkOrder }) {
             <div>
               <div className="card-title">Prediction Details ({selectedPrediction.name})</div>
             </div>
-            <button className="btn btn-secondary btn-sm" onClick={() => setSelected(null)}>✕ Close</button>
+            <button className="btn btn-secondary btn-sm" onClick={() => setSelected(null)}><XCircle size={14} style={{ marginRight: 6 }} /> Close</button>
           </div>
 
           <div className="grid-2">

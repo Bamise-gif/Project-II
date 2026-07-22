@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts"
+import { RefreshCcw, Thermometer, Zap, Activity, Clock } from "lucide-react"
 
 function LiveMonitoringScreen({ predictions, equipmentList }) {
   const [currentTime, setCurrentTime] = useState(new Date())
@@ -45,13 +46,13 @@ function LiveMonitoringScreen({ predictions, equipmentList }) {
             <option value="6">Last 6 Hours</option>
             <option value="24">Last 24 Hours</option>
           </select>
-          <button className="btn btn-secondary" onClick={() => setTimeRange(timeRange)}>🔄 Refresh</button>
+          <button className="btn btn-secondary" onClick={() => setTimeRange(timeRange)}><RefreshCcw size={14} style={{ marginRight: 6 }} /> Refresh</button>
         </div>
       </div>
 
       <div className="kpi-grid" style={{ marginBottom: "20px" }}>
         <div className="kpi-card">
-          <div className="kpi-icon blue">🌡</div>
+          <div className="kpi-icon blue"><Thermometer size={18} /></div>
           <div>
             <div className="kpi-label">Avg Temperature</div>
             <div className="kpi-value">{avgTemp}°C</div>
@@ -59,7 +60,7 @@ function LiveMonitoringScreen({ predictions, equipmentList }) {
           </div>
         </div>
         <div className="kpi-card">
-          <div className="kpi-icon green">⚡</div>
+          <div className="kpi-icon green"><Zap size={18} /></div>
           <div>
             <div className="kpi-label">Avg Current</div>
             <div className="kpi-value">{avgCurrent}A</div>
@@ -67,7 +68,7 @@ function LiveMonitoringScreen({ predictions, equipmentList }) {
           </div>
         </div>
         <div className="kpi-card">
-          <div className="kpi-icon amber">📳</div>
+          <div className="kpi-icon amber"><Activity size={18} /></div>
           <div>
             <div className="kpi-label">Avg Vibration</div>
             <div className="kpi-value">{avgVibration}</div>
@@ -75,7 +76,7 @@ function LiveMonitoringScreen({ predictions, equipmentList }) {
           </div>
         </div>
         <div className="kpi-card">
-          <div className="kpi-icon blue">🕐</div>
+          <div className="kpi-icon blue"><Clock size={18} /></div>
           <div>
             <div className="kpi-label">Last Updated</div>
             <div className="kpi-value" style={{ fontSize: "16px" }}>{currentTime.toLocaleTimeString()}</div>

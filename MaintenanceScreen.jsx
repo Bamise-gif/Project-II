@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Wrench, CheckCircle2, Hourglass, AlertTriangle, AlertOctagon, Info, XCircle } from "lucide-react"
 
 function MaintenanceScreen({ workOrders, completeWorkOrder, equipmentList, addWorkOrder }) {
   const [activeTab, setActiveTab] = useState("tasks")
@@ -59,28 +60,28 @@ function MaintenanceScreen({ workOrders, completeWorkOrder, equipmentList, addWo
 
       <div className="kpi-grid" style={{ marginBottom: "20px" }}>
         <div className="kpi-card">
-          <div className="kpi-icon blue">🔧</div>
+          <div className="kpi-icon blue"><Wrench size={18} /></div>
           <div>
             <div className="kpi-label">Total Tasks</div>
             <div className="kpi-value">{total}</div>
           </div>
         </div>
         <div className="kpi-card">
-          <div className="kpi-icon green">✅</div>
+          <div className="kpi-icon green"><CheckCircle2 size={18} /></div>
           <div>
             <div className="kpi-label">Completed</div>
             <div className="kpi-value" style={{ color: "#16A34A" }}>{completed}</div>
           </div>
         </div>
         <div className="kpi-card">
-          <div className="kpi-icon amber">⏳</div>
+          <div className="kpi-icon amber"><Hourglass size={18} /></div>
           <div>
             <div className="kpi-label">In Progress</div>
             <div className="kpi-value" style={{ color: "#D97706" }}>{inProgress + pending}</div>
           </div>
         </div>
         <div className="kpi-card">
-          <div className="kpi-icon red">🚨</div>
+          <div className="kpi-icon red"><AlertTriangle size={18} /></div>
           <div>
             <div className="kpi-label">Overdue</div>
             <div className="kpi-value" style={{ color: "#DC2626" }}>{overdue}</div>
@@ -161,7 +162,15 @@ function MaintenanceScreen({ workOrders, completeWorkOrder, equipmentList, addWo
                   <td style={{ color: "#6B7280" }}>{w.detail}</td>
                   <td><span className="pill pill-healthy">Done</span></td>
                   <td style={{ color: "#6B7280", fontSize: "12.5px" }}>
-                    {w.outcome === "real_issue" ? "✅ Confirmed real issue" : w.outcome === "false_alarm" ? "❌ False alarm" : "—"}
+                    {w.outcome === "real_issue" ? (
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                        <CheckCircle2 size={14} /> Confirmed real issue
+                      </span>
+                    ) : w.outcome === "false_alarm" ? (
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                        <XCircle size={14} /> False alarm
+                      </span>
+                    ) : "—"}
                   </td>
                 </tr>
               ))}
