@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Menu, X, Bell,Settings} from "lucide-react"
+import { Menu, X, Bell, Settings, Moon, Sun } from "lucide-react"
 import LoginScreen from "./LoginScreen"
 import DashboardScreen from "./DashboardScreen"
 import EquipmentScreen from "./EquipmentScreen"
@@ -32,7 +32,20 @@ function App() {
   const [sensorReadings, setSensorReadings] = useState([])
   const [equipmentList, setEquipmentList] = useState(equipmentMeta)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [theme, setTheme] = useState(() => {
+    if (typeof window === "undefined") return "light"
+    const savedTheme = window.localStorage.getItem("theme")
+    if (savedTheme === "dark" || savedTheme === "light") return savedTheme
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+  })
+  const isDarkMode = theme === "dark"
 
+  useEffect(() => {
+    const root = document.documentElement
+    root.classList.toggle("dark", isDarkMode)
+    root.setAttribute("data-theme", theme)
+    window.localStorage.setItem("theme", theme)
+  }, [theme, isDarkMode])
 
   useEffect(() => {
     const handleResize = () => {
@@ -240,9 +253,25 @@ function App() {
             </div>
           </div>
           <div className="right">
-            <button type="button" className="notif-btn" aria-label="Notifications">
+            <button type="button" className="icon-btn notif-btn" aria-label="Notifications">
               <Bell size={18} />
               <span className="dot"></span>
+            </button>
+            <button
+              type="button"
+              className="icon-btn"
+              aria-label="Settings"
+              onClick={() => handleNavigate("settings")}
+            >
+              <Settings size={18} />
+            </button>
+            <button
+              type="button"
+              className="icon-btn theme-toggle"
+              aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+              onClick={() => setTheme((prev) => prev === "dark" ? "light" : "dark")}
+            >
+              {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
             <div className="admin-badge">
               <div className="admin-avatar">A</div>
