@@ -11,15 +11,17 @@ body {
 
 :root {
   color-scheme: light;
-  --blue: #2563EB;
-  --blue-light: #EFF6FF;
+  --yellow: #a87f17;
+  --yellow-light: #EED86B;
   --blue-mid: #DBEAFE;
-  --green: #16A34A;
-  --green-light: #F0FDF4;
-  --amber: #D97706;
-  --amber-light: #FFFBEB;
-  --red: #DC2626;
-  --red-light: #FEF2F2;
+  --blue:#2264ED;
+  --blue-light: #E0F2FE;
+  --green: #095637;
+  --green-light: #8CD8BA;
+  --amber:#c27f19;
+  --amber-light: #F6E9D6;
+  --red: #c52020;
+  --red-light: #EE8889;
   --gray: #6B7280;
   --gray-light: #F3F4F6;
   --border: #E5E7EB;
@@ -48,17 +50,19 @@ body {
   --blue-light: #172554;
   --blue-mid: #1E3A8A;
   --green: #4ADE80;
-  --green-light: #052E16;
-  --amber: #FBBF24;
-  --amber-light: #451A03;
+  --green-light: #0b4d27;
+  --amber: #876714;
+  --yellow:#8b6e23;
+  --yellow-light: #b7b53b;
+  --amber-light: git#501f05;
   --red: #F87171;
-  --red-light: #450A0A;
+  --red-light: #861010;
   --gray: #CBD5E1;
   --gray-light: #1F2937;
   --border: #334155;
   --white: #0F172A;
   --navy: #3B82F6;
-  --text: #F8FAFC;
+  --text:#977373;
   --text-sub: #CBD5E1;
   --text-main: #F8FAFC;
   --text-muted: #CBD5E1;
@@ -497,11 +501,11 @@ body {
   transform:translateY(-4px);
   box-shadow:0 18px 40px rgba(37, 99, 235, 0.16);
 }
-
-.kpi-card:nth-child(1){--accent:var(--blue); --accent-soft:var(--blue-light);}
+/* 
+.kpi-card:nth-child(1){--accent:var(--amber); --accent-soft:var(--amber-light);}
 .kpi-card:nth-child(2){--accent:var(--green); --accent-soft:var(--green-light);}
-.kpi-card:nth-child(3){--accent:var(--amber); --accent-soft:var(--amber-light);}
-.kpi-card:nth-child(4){--accent:var(--red); --accent-soft:var(--red-light);} 
+.kpi-card:nth-child(3){--accent:var(--yellow); --accent-soft:var(--yellow-light);}
+.kpi-card:nth-child(4){--accent:var(--red); --accent-soft:var(--red-light);}  */
 
 .kpi-card::before{
   content:"";
@@ -556,7 +560,38 @@ body {
   transform:translateY(-2px) rotate(45deg) scale(1.05);
   box-shadow:0 8px 20px rgba(15, 23, 42, 0.18);
 }
+/* changes to the kpi card */
+.kpi-card:nth-child(1){--accent:var(--amber); --accent-soft:var(--amber-light); background: var(--accent-soft);}
+.kpi-card:nth-child(2){--accent:var(--green); --accent-soft:var(--green-light); background: var(--accent-soft);}
+.kpi-card:nth-child(3){--accent:var(--yellow); --accent-soft:var(--yellow-light); background: var(--accent-soft);}
+.kpi-card:nth-child(4){--accent:var(--red); --accent-soft:var(--red-light); background: var(--accent-soft);}
 
+.kpi-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:none;   /* was: linear-gradient(135deg, var(--accent-soft) 0%, transparent 70%); */
+  opacity:0;         /* was: 0.45 — the gradient tint is what was washing out the solid color */
+  pointer-events:none;
+}
+
+.kpi-card::after{
+  content:"↗";
+  position:absolute;
+  right:16px;
+  bottom:16px;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:#1A1A2E;   /* was: var(--accent) — now dark/black like the reference */
+  color:#FFFFFF;        /* was: var(--bg-card) */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  cursor:pointer;
+  transition:transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
 @keyframes arrow-pop {
   0% { transform:scale(0.95) rotate(0deg); }
   50% { transform:scale(1.1) rotate(25deg); }
