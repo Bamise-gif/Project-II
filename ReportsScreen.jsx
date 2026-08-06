@@ -1,4 +1,5 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts"
+import { Box, CheckCircle2, Zap, AlertTriangle, Clipboard, Download, Hourglass } from "lucide-react"
 
 function ReportsScreen({ predictions, workOrders, reports }) {
   const total = predictions.length
@@ -43,20 +44,20 @@ function ReportsScreen({ predictions, workOrders, reports }) {
             <option>Last Month</option>
             <option>Last 3 Months</option>
           </select>
-          <button className="btn btn-secondary">⤓ Export</button>
+          <button className="btn btn-secondary"><Download size={14} style={{ marginRight: 6 }} /> Export</button>
         </div>
       </div>
 
       <div className="kpi-grid" style={{ marginBottom: "20px" }}>
         <div className="kpi-card">
-          <div className="kpi-icon blue">📦</div>
+          <div className="kpi-icon blue"><Box size={18} /></div>
           <div>
             <div className="kpi-label">Total Equipment Monitored</div>
             <div className="kpi-value">{total}</div>
           </div>
         </div>
         <div className="kpi-card">
-          <div className="kpi-icon green">✅</div>
+          <div className="kpi-icon green"><CheckCircle2 size={18} /></div>
           <div>
             <div className="kpi-label">Healthy</div>
             <div className="kpi-value">{healthy}</div>
@@ -64,7 +65,7 @@ function ReportsScreen({ predictions, workOrders, reports }) {
           </div>
         </div>
         <div className="kpi-card">
-          <div className="kpi-icon amber">⚠️</div>
+          <div className="kpi-icon amber"><Zap size={18} /></div>
           <div>
             <div className="kpi-label">Need Attention</div>
             <div className="kpi-value">{attention}</div>
@@ -72,7 +73,7 @@ function ReportsScreen({ predictions, workOrders, reports }) {
           </div>
         </div>
         <div className="kpi-card">
-          <div className="kpi-icon red">🚨</div>
+          <div className="kpi-icon red"><AlertTriangle size={18} /></div>
           <div>
             <div className="kpi-label">High Risk</div>
             <div className="kpi-value">{highRisk}</div>
@@ -112,9 +113,9 @@ function ReportsScreen({ predictions, workOrders, reports }) {
           <div className="card-title" style={{ marginBottom: "14px" }}>Maintenance Summary</div>
           <div style={{ fontSize: "13px" }}>
             {[
-              { label: "Total Maintenance Tasks", value: workOrders.length, icon: "📋" },
-              { label: "Completed", value: completed, icon: "✅", pct: workOrders.length > 0 ? Math.round(completed / workOrders.length * 100) : 0 },
-              { label: "In Progress / Pending", value: inProgress, icon: "⏳", pct: workOrders.length > 0 ? Math.round(inProgress / workOrders.length * 100) : 0 }
+              { label: "Total Maintenance Tasks", value: workOrders.length, icon: <Clipboard size={14} /> },
+              { label: "Completed", value: completed, icon: <CheckCircle2 size={14} />, pct: workOrders.length > 0 ? Math.round(completed / workOrders.length * 100) : 0 },
+              { label: "In Progress / Pending", value: inProgress, icon: <Hourglass size={14} />, pct: workOrders.length > 0 ? Math.round(inProgress / workOrders.length * 100) : 0 }
             ].map((item, i) => (
               <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: "1px solid #F3F4F6" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
@@ -174,9 +175,9 @@ function ReportsScreen({ predictions, workOrders, reports }) {
                   <a
                     href={"http://localhost:3000/api/reports/download/" + r.endpoint}
                     download
-                    style={{ color: "#2563EB", fontWeight: 600, fontSize: "13px", textDecoration: "none" }}
+                    style={{ color: "#2563EB", fontWeight: 600, fontSize: "13px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px" }}
                   >
-                    ⤓ Download
+                    <Download size={14} /> Download
                   </a>
                 </td>
               </tr>
