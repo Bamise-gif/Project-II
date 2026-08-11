@@ -8,4 +8,3 @@ createRoot(document.getElementById('root')).render(
     <App />
   </StrictMode>,
 )
-//Entry point for the React application, rendering the App component into the root DOM element.

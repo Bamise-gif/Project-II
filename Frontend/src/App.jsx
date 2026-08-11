@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-import { Menu, X, Bell, Settings, Moon, Sun } from "lucide-react"
 import LoginScreen from "./LoginScreen"
 import DashboardScreen from "./DashboardScreen"
 import EquipmentScreen from "./EquipmentScreen"
@@ -9,10 +8,6 @@ import AlertsScreen from "./AlertsScreen"
 import MaintenanceScreen from "./MaintenanceScreen"
 import ReportsScreen from "./ReportsScreen"
 import SettingsScreen from "./SettingsScreen"
-import Sidebar from "./Sidebar"
-import Header  from "./Header"
-import logo from "./images/logo.png"
-//central controller for the entire application, managing state and routing between different sections of the app.
 
 const equipmentMeta = [
   { id: "AC-001", name: "Library AC Unit", location: "Main Library", age_years: 5, days_since_maintenance: 15 },
@@ -31,32 +26,7 @@ function App() {
   const [predictions, setPredictions] = useState([])
   const [sensorReadings, setSensorReadings] = useState([])
   const [equipmentList, setEquipmentList] = useState(equipmentMeta)
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-  const [theme, setTheme] = useState(() => {
-    if (typeof window === "undefined") return "light"
-    const savedTheme = window.localStorage.getItem("theme")
-    if (savedTheme === "dark" || savedTheme === "light") return savedTheme
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
-  })
-  const isDarkMode = theme === "dark"
-
-  useEffect(() => {
-    const root = document.documentElement
-    root.classList.toggle("dark", isDarkMode)
-    root.setAttribute("data-theme", theme)
-    window.localStorage.setItem("theme", theme)
-  }, [theme, isDarkMode])
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth <= 900) {
-        setIsSidebarOpen(false)
-      }
-    }
-
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+  const [sidebarOpen, setSidebarOpen] = useState(true)
 
   useEffect(() => {
     if (!currentUser) return
@@ -177,11 +147,6 @@ function App() {
     return null
   }
 
-  const handleNavigate = (section) => {
-    setCurrentSection(section)
-    setIsSidebarOpen(false)
-  }
-
   const sharedProps = {
     predictions: predictions,
     workOrders: workOrders,
@@ -191,10 +156,10 @@ function App() {
     addWorkOrder: addWorkOrder,
     completeWorkOrder: completeWorkOrder,
     addReport: addReport,
-    onNavigate: handleNavigate,
+    onNavigate: setCurrentSection,
     onViewEquipment: function(eq) {
       setSelectedEquipment(eq)
-      handleNavigate("equipment")
+      setCurrentSection("equipment")
     }
   }
 
@@ -210,69 +175,72 @@ function App() {
     return <DashboardScreen {...sharedProps} />
   }
 
+  const navItems = [
+    { key: "dashboard", icon: "🏠", label: "Dashboard" },
+    { key: "equipment", icon: "🖥", label: "Equipment" },
+    { key: "monitoring", icon: "📡", label: "Live Monitoring" },
+    { key: "predictions", icon: "📈", label: "Predictions" },
+    { key: "alerts", icon: "🔔", label: "Alerts" },
+    { key: "maintenance", icon: "🔧", label: "Maintenance" },
+    { key: "reports", icon: "📄", label: "Reports" },
+    { key: "settings", icon: "⚙️", label: "Settings" }
+  ]
+
+  function navigate(key) {
+    setCurrentSection(key)
+    if (window.innerWidth < 1000) setSidebarOpen(false)
+  }
+
   return (
     <div className="app-shell">
-      <div
-        className={`sidebar-overlay ${isSidebarOpen ? "show" : ""}`}
-        onClick={() => setIsSidebarOpen(false)}
-      />
-
-      <Sidebar
-        currentSection={currentSection}
-        onNavigate={handleNavigate}
-        onLogout={() => {
-          setCurrentUser(null)
-          setIsSidebarOpen(false)
-        }}
-        isOpen={isSidebarOpen}
-        onClose={() => setIsSidebarOpen(false)}
-      />
-
-      <div className="main-area">
-        <div className="topbar">
-          <div className="topbar-left">
-            <img src={logo} alt="Logo" className="topbar-logo" />
-            <button
-              type="button"
-              className="hamburger-btn"
-              onClick={() => setIsSidebarOpen((prev) => !prev)}
-              aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
-              aria-expanded={isSidebarOpen}
-            >
-              {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
-            <div className="page-title">
-              {currentSection === "dashboard" && "Dashboard"}
-              {currentSection === "equipment" && "Project"}
-              {currentSection === "monitoring" && "Insights"}
-              {currentSection === "predictions" && "Analysis"}
-              {currentSection === "alerts" && "Document"}
-              {currentSection === "maintenance" && "Time Tracker"}
-              {currentSection === "reports" && "Reports"}
-              {currentSection === "settings" && "Setting"}
+      <div className={"sidebar" + (sidebarOpen ? " open" : "")}>
+        <div className="brand">
+          <div className="brand-info">
+            <span style={{ fontSize: "22px" }}>🏛</span>
+            <div className="brand-text">
+              <div className="name">Smart University</div>
+              <div className="sub">Facility Predictive Maintenance</div>
             </div>
           </div>
+          <button className="sidebar-close-btn" onClick={() => setSidebarOpen(false)}>✕</button>
+        </div>
+
+        <div className="sidebar-nav">
+          {navItems.map((item) => (
+            <button
+              key={item.key}
+              className={currentSection === item.key ? "active" : ""}
+              onClick={() => navigate(item.key)}
+            >
+              <span className="nav-icon">{item.icon}</span>
+              {item.label}
+            </button>
+          ))}
+          <button
+            onClick={() => setCurrentUser(null)}
+            style={{ color: "#DC2626", marginTop: "8px" }}
+          >
+            <span className="nav-icon">🚪</span>
+            Logout
+          </button>
+        </div>
+        <div className="foot">© 2025 Smart University</div>
+      </div>
+
+      {sidebarOpen && window.innerWidth < 1000 && (
+        <div className="sidebar-overlay show" onClick={() => setSidebarOpen(false)} />
+      )}
+
+      <div className={"main-area" + (sidebarOpen ? " sidebar-open" : "")}>
+        <div className="topbar">
+          <button className="hamburger-btn" onClick={() => setSidebarOpen(!sidebarOpen)}>
+            ☰
+          </button>
+          <div className="page-title">
+            {navItems.find((n) => n.key === currentSection)?.label || "Dashboard"}
+          </div>
           <div className="right">
-            <button type="button" className="icon-btn notif-btn" aria-label="Notifications">
-              <Bell size={18} />
-              <span className="dot"></span>
-            </button>
-            <button
-              type="button"
-              className="icon-btn"
-              aria-label="Settings"
-              onClick={() => handleNavigate("settings")}
-            >
-              <Settings size={18} />
-            </button>
-            <button
-              type="button"
-              className="icon-btn theme-toggle"
-              aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
-              onClick={() => setTheme((prev) => prev === "dark" ? "light" : "dark")}
-            >
-              {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
+            <div className="notif-btn">🔔<span className="dot"></span></div>
             <div className="admin-badge">
               <div className="admin-avatar">A</div>
               {currentUser.username} ▾
@@ -286,6 +254,5 @@ function App() {
     </div>
   )
 }
-
 
 export default App
