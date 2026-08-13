@@ -8,6 +8,7 @@ import AlertsScreen from "./AlertsScreen"
 import MaintenanceScreen from "./MaintenanceScreen"
 import ReportsScreen from "./ReportsScreen"
 import SettingsScreen from "./SettingsScreen"
+import ReporterScreen from "./ReporterScreen"
 
 const equipmentMeta = [
   { id: "AC-001", name: "Library AC Unit", location: "Main Library", age_years: 5, days_since_maintenance: 15 },
@@ -143,8 +144,13 @@ function App() {
   }
 
   if (!currentUser) {
-    setCurrentUser({ username: "admin", role: "admin" })
-    return null
+    return <LoginScreen onLogin={(user) => {
+      setCurrentUser(user)
+      setCurrentSection("dashboard")
+    }} />
+   }
+  if (currentUser.role === "reporter") {
+    return <ReporterScreen currentUser={currentUser} onLogout={() => setCurrentUser(null)} />
   }
 
   const sharedProps = {
@@ -175,16 +181,18 @@ function App() {
     return <DashboardScreen {...sharedProps} />
   }
 
-  const navItems = [
-    { key: "dashboard", icon: "🏠", label: "Dashboard" },
-    { key: "equipment", icon: "🖥", label: "Equipment" },
-    { key: "monitoring", icon: "📡", label: "Live Monitoring" },
-    { key: "predictions", icon: "📈", label: "Predictions" },
-    { key: "alerts", icon: "🔔", label: "Alerts" },
-    { key: "maintenance", icon: "🔧", label: "Maintenance" },
-    { key: "reports", icon: "📄", label: "Reports" },
-    { key: "settings", icon: "⚙️", label: "Settings" }
+  const allNavItems = [
+    { key: "dashboard", icon: "🏠", label: "Dashboard", roles: ["manager", "technician", "executive", "admin"] },
+    { key: "equipment", icon: "🖥", label: "Equipment", roles: ["manager", "technician", "admin"] },
+    { key: "monitoring", icon: "📡", label: "Live Monitoring", roles: ["manager", "technician", "admin"] },
+    { key: "predictions", icon: "📈", label: "Predictions", roles: ["manager", "admin"] },
+    { key: "alerts", icon: "🔔", label: "Alerts", roles: ["manager", "executive", "admin"] },
+    { key: "maintenance", icon: "🔧", label: "Maintenance", roles: ["manager", "technician", "admin"] },
+    { key: "reports", icon: "📄", label: "Reports", roles: ["manager", "executive", "admin"] },
+    { key: "settings", icon: "⚙️", label: "Settings", roles: ["manager", "executive", "admin"] }
   ]
+
+  const navItems = allNavItems.filter((item) => item.roles.includes(currentUser.role))
 
   function navigate(key) {
     setCurrentSection(key)
