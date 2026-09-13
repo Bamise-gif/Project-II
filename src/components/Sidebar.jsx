@@ -1,5 +1,5 @@
 import { Home, HardDrive, Activity, BarChart3, Bell, Wrench, FileText, Settings, LogOut, X } from "lucide-react"
-import logo from "./images/logo.png"
+import logo from "../assets/images/logo.png"
 
 const navigationItems = [
   { id: "dashboard", label: "Dashboard", icon: Home },

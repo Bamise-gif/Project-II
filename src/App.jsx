@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react"
 import { Menu, X, Bell, Settings, Moon, Sun } from "lucide-react"
-import LoginScreen from "./LoginScreen"
-import DashboardScreen from "./DashboardScreen"
-import EquipmentScreen from "./EquipmentScreen"
-import LiveMonitoringScreen from "./LiveMonitoringScreen"
-import PredictionsScreen from "./PredictionsScreen"
-import AlertsScreen from "./AlertsScreen"
-import MaintenanceScreen from "./MaintenanceScreen"
-import ReportsScreen from "./ReportsScreen"
-import SettingsScreen from "./SettingsScreen"
-import Sidebar from "./Sidebar"
-import Header  from "./Header"
-import logo from "./images/logo.png"
+import LoginScreen from "./components/LoginScreen"
+import DashboardScreen from "./components/DashboardScreen"
+import EquipmentScreen from "./components/EquipmentScreen"
+import LiveMonitoringScreen from "./components/LiveMonitoringScreen"
+import PredictionsScreen from "./components/PredictionsScreen"
+import AlertsScreen from "./components/AlertsScreen"
+import MaintenanceScreen from "./components/MaintenanceScreen"
+import ReportsScreen from "./components/ReportsScreen"
+import SettingsScreen from "./components/SettingsScreen"
+import Sidebar from "./components/Sidebar"
+import Header  from "./components/Header"  
+import logo from "./assets/images/logo.png"
 //central controller for the entire application, managing state and routing between different sections of the app.
 
 const equipmentMeta = [
@@ -211,12 +211,7 @@ function App() {
   }
 
   return (
-    <div className="app-shell">
-      <div
-        className={`sidebar-overlay ${isSidebarOpen ? "show" : ""}`}
-        onClick={() => setIsSidebarOpen(false)}
-      />
-
+    <div className={`app-shell ${isSidebarOpen ? "sidebar-open" : ""}`}>
       <Sidebar
         currentSection={currentSection}
         onNavigate={handleNavigate}
