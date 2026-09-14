@@ -1,20 +1,4 @@
 import { useState, useEffect } from "react"
-<<<<<<<< HEAD:src/App.jsx
-import { Menu, X, Bell, Settings, Moon, Sun } from "lucide-react"
-import LoginScreen from "./components/LoginScreen"
-import DashboardScreen from "./components/DashboardScreen"
-import EquipmentScreen from "./components/EquipmentScreen"
-import LiveMonitoringScreen from "./components/LiveMonitoringScreen"
-import PredictionsScreen from "./components/PredictionsScreen"
-import AlertsScreen from "./components/AlertsScreen"
-import MaintenanceScreen from "./components/MaintenanceScreen"
-import ReportsScreen from "./components/ReportsScreen"
-import SettingsScreen from "./components/SettingsScreen"
-import Sidebar from "./components/Sidebar"
-import Header  from "./components/Header"  
-import logo from "./assets/images/logo.png"
-//central controller for the entire application, managing state and routing between different sections of the app.
-========
 import LoginScreen from "./LoginScreen"
 import DashboardScreen from "./DashboardScreen"
 import EquipmentScreen from "./EquipmentScreen"
@@ -25,7 +9,6 @@ import MaintenanceScreen from "./MaintenanceScreen"
 import ReportsScreen from "./ReportsScreen"
 import SettingsScreen from "./SettingsScreen"
 import ReporterScreen from "./ReporterScreen"
->>>>>>>> main:Frontend/src/App.jsx
 
 const equipmentMeta = [
   { id: "AC-001", name: "Library AC Unit", location: "Main Library", age_years: 5, days_since_maintenance: 15 },
@@ -217,42 +200,6 @@ function App() {
   }
 
   return (
-<<<<<<<< HEAD:src/App.jsx
-    <div className={`app-shell ${isSidebarOpen ? "sidebar-open" : ""}`}>
-      <Sidebar
-        currentSection={currentSection}
-        onNavigate={handleNavigate}
-        onLogout={() => {
-          setCurrentUser(null)
-          setIsSidebarOpen(false)
-        }}
-        isOpen={isSidebarOpen}
-        onClose={() => setIsSidebarOpen(false)}
-      />
-
-      <div className="main-area">
-        <div className="topbar">
-          <div className="topbar-left">
-            <img src={logo} alt="Logo" className="topbar-logo" />
-            <button
-              type="button"
-              className="hamburger-btn"
-              onClick={() => setIsSidebarOpen((prev) => !prev)}
-              aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
-              aria-expanded={isSidebarOpen}
-            >
-              {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
-            <div className="page-title">
-              {currentSection === "dashboard" && "Dashboard"}
-              {currentSection === "equipment" && "Project"}
-              {currentSection === "monitoring" && "Insights"}
-              {currentSection === "predictions" && "Analysis"}
-              {currentSection === "alerts" && "Document"}
-              {currentSection === "maintenance" && "Time Tracker"}
-              {currentSection === "reports" && "Reports"}
-              {currentSection === "settings" && "Setting"}
-========
     <div className="app-shell">
       <div className={"sidebar" + (sidebarOpen ? " open" : "")}>
         <div className="brand">
@@ -261,7 +208,6 @@ function App() {
             <div className="brand-text">
               <div className="name">Smart University</div>
               <div className="sub">Facility Predictive Maintenance</div>
->>>>>>>> main:Frontend/src/App.jsx
             </div>
           </div>
           <button className="sidebar-close-btn" onClick={() => setSidebarOpen(false)}>✕</button>
