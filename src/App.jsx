@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
-<<<<<<<< HEAD:src/App.jsx
-import { Menu, X, Bell, Settings, Moon, Sun } from "lucide-react"
+import Sidebar from "./components/Sidebar"
+import Header from "./components/Header"
 import LoginScreen from "./components/LoginScreen"
 import DashboardScreen from "./components/DashboardScreen"
 import EquipmentScreen from "./components/EquipmentScreen"
@@ -10,22 +10,6 @@ import AlertsScreen from "./components/AlertsScreen"
 import MaintenanceScreen from "./components/MaintenanceScreen"
 import ReportsScreen from "./components/ReportsScreen"
 import SettingsScreen from "./components/SettingsScreen"
-import Sidebar from "./components/Sidebar"
-import Header  from "./components/Header"  
-import logo from "./assets/images/logo.png"
-//central controller for the entire application, managing state and routing between different sections of the app.
-========
-import LoginScreen from "./LoginScreen"
-import DashboardScreen from "./DashboardScreen"
-import EquipmentScreen from "./EquipmentScreen"
-import LiveMonitoringScreen from "./LiveMonitoringScreen"
-import PredictionsScreen from "./PredictionsScreen"
-import AlertsScreen from "./AlertsScreen"
-import MaintenanceScreen from "./MaintenanceScreen"
-import ReportsScreen from "./ReportsScreen"
-import SettingsScreen from "./SettingsScreen"
-import ReporterScreen from "./ReporterScreen"
->>>>>>>> main:Frontend/src/App.jsx
 
 const equipmentMeta = [
   { id: "AC-001", name: "Library AC Unit", location: "Main Library", age_years: 5, days_since_maintenance: 15 },
@@ -36,7 +20,7 @@ const equipmentMeta = [
 ]
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null)
+  const [currentUser, setCurrentUser] = useState({ username: "admin", role: "admin" })
   const [currentSection, setCurrentSection] = useState("dashboard")
   const [selectedEquipment, setSelectedEquipment] = useState(null)
   const [workOrders, setWorkOrders] = useState([])
@@ -44,7 +28,18 @@ function App() {
   const [predictions, setPredictions] = useState([])
   const [sensorReadings, setSensorReadings] = useState([])
   const [equipmentList, setEquipmentList] = useState(equipmentMeta)
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [theme, setTheme] = useState(() => {
+    const savedTheme = window.localStorage.getItem("theme")
+    return savedTheme === "dark" || savedTheme === "light" ? savedTheme : "light"
+  })
+  const isDarkMode = theme === "dark"
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", isDarkMode)
+    document.documentElement.setAttribute("data-theme", theme)
+    window.localStorage.setItem("theme", theme)
+  }, [theme, isDarkMode])
 
   useEffect(() => {
     if (!currentUser) return
@@ -166,10 +161,6 @@ function App() {
       setCurrentSection("dashboard")
     }} />
    }
-  if (currentUser.role === "reporter") {
-    return <ReporterScreen currentUser={currentUser} onLogout={() => setCurrentUser(null)} />
-  }
-
   const sharedProps = {
     predictions: predictions,
     workOrders: workOrders,
@@ -213,102 +204,26 @@ function App() {
 
   function navigate(key) {
     setCurrentSection(key)
-    if (window.innerWidth < 1000) setSidebarOpen(false)
   }
 
   return (
-<<<<<<<< HEAD:src/App.jsx
-    <div className={`app-shell ${isSidebarOpen ? "sidebar-open" : ""}`}>
+    <div className={"app-shell" + (isSidebarOpen ? " sidebar-open" : "")}>
       <Sidebar
         currentSection={currentSection}
-        onNavigate={handleNavigate}
-        onLogout={() => {
-          setCurrentUser(null)
-          setIsSidebarOpen(false)
-        }}
+        currentUser={currentUser}
+        onNavigate={navigate}
+        onLogout={() => setCurrentUser(null)}
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
       />
-
       <div className="main-area">
-        <div className="topbar">
-          <div className="topbar-left">
-            <img src={logo} alt="Logo" className="topbar-logo" />
-            <button
-              type="button"
-              className="hamburger-btn"
-              onClick={() => setIsSidebarOpen((prev) => !prev)}
-              aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
-              aria-expanded={isSidebarOpen}
-            >
-              {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
-            <div className="page-title">
-              {currentSection === "dashboard" && "Dashboard"}
-              {currentSection === "equipment" && "Project"}
-              {currentSection === "monitoring" && "Insights"}
-              {currentSection === "predictions" && "Analysis"}
-              {currentSection === "alerts" && "Document"}
-              {currentSection === "maintenance" && "Time Tracker"}
-              {currentSection === "reports" && "Reports"}
-              {currentSection === "settings" && "Setting"}
-========
-    <div className="app-shell">
-      <div className={"sidebar" + (sidebarOpen ? " open" : "")}>
-        <div className="brand">
-          <div className="brand-info">
-            <span style={{ fontSize: "22px" }}>🏛</span>
-            <div className="brand-text">
-              <div className="name">Smart University</div>
-              <div className="sub">Facility Predictive Maintenance</div>
->>>>>>>> main:Frontend/src/App.jsx
-            </div>
-          </div>
-          <button className="sidebar-close-btn" onClick={() => setSidebarOpen(false)}>✕</button>
-        </div>
-
-        <div className="sidebar-nav">
-          {navItems.map((item) => (
-            <button
-              key={item.key}
-              className={currentSection === item.key ? "active" : ""}
-              onClick={() => navigate(item.key)}
-            >
-              <span className="nav-icon">{item.icon}</span>
-              {item.label}
-            </button>
-          ))}
-          <button
-            onClick={() => setCurrentUser(null)}
-            style={{ color: "#DC2626", marginTop: "8px" }}
-          >
-            <span className="nav-icon">🚪</span>
-            Logout
-          </button>
-        </div>
-        <div className="foot">© 2025 Smart University</div>
-      </div>
-
-      {sidebarOpen && window.innerWidth < 1000 && (
-        <div className="sidebar-overlay show" onClick={() => setSidebarOpen(false)} />
-      )}
-
-      <div className={"main-area" + (sidebarOpen ? " sidebar-open" : "")}>
-        <div className="topbar">
-          <button className="hamburger-btn" onClick={() => setSidebarOpen(!sidebarOpen)}>
-            ☰
-          </button>
-          <div className="page-title">
-            {navItems.find((n) => n.key === currentSection)?.label || "Dashboard"}
-          </div>
-          <div className="right">
-            <div className="notif-btn">🔔<span className="dot"></span></div>
-            <div className="admin-badge">
-              <div className="admin-avatar">A</div>
-              {currentUser.username} ▾
-            </div>
-          </div>
-        </div>
+        <Header
+          currentScreen={currentSection}
+          currentUser={currentUser}
+          onMenuOpen={() => setIsSidebarOpen((previous) => !previous)}
+          theme={theme}
+          onThemeToggle={() => setTheme((previous) => previous === "dark" ? "light" : "dark")}
+        />
         <div className="content">
           {renderSection()}
         </div>

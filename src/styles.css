@@ -88,7 +88,7 @@ body {
 .app-shell { display: flex; min-height: 100vh; background: var(--page-bg); color: var(--text); }
 
 .sidebar {
-  width: 220px;
+  width: min(220px, 82vw);
   background: var(--surface);
   border-right: 1px solid var(--border);
   flex-shrink: 0;
@@ -373,6 +373,21 @@ body {
   .topbar {
     margin-right: 220px;
     margin-left: -20px;
+  }
+}
+
+@media (max-width: 999px) {
+  .sidebar {
+    width: min(220px, 82vw);
+  }
+
+  .main-area {
+    width: 100%;
+  }
+
+  .app-shell.sidebar-open .main-area {
+    width: calc(100% - min(220px, 82vw));
+    margin-left: min(220px, 82vw);
   }
 }
 

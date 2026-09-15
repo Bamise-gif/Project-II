@@ -19,7 +19,7 @@ const equipmentMeta = [
 ]
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null)
+  const [currentUser, setCurrentUser] = useState({ username: "admin", role: "admin" })
   const [currentSection, setCurrentSection] = useState("dashboard")
   const [selectedEquipment, setSelectedEquipment] = useState(null)
   const [workOrders, setWorkOrders] = useState([])

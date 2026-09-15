@@ -92,44 +92,20 @@ app.patch("/api/workorders/:id", (req, res) => {
 app.post("/api/login", (req, res) => {
   const { username, password } = req.body
   const user = db.prepare("SELECT * FROM users WHERE username = ?").get(username)
-<<<<<<<< HEAD:server/server.js
-
   if (!user) {
     return res.status(401).json({ error: "Invalid username or password" })
   }
-
-========
-  if (!user) {
-    return res.status(401).json({ error: "Invalid username or password" })
-  }
->>>>>>>> main:backend/server.js
   const passwordMatches = bcrypt.compareSync(password, user.password_hash)
   if (!passwordMatches) {
     return res.status(401).json({ error: "Invalid username or password" })
   }
-<<<<<<<< HEAD:server/server.js
-
   res.json({ username: user.username, role: user.role })
 })
-
-app.listen(3000, () => {
-  console.log("Server running on http://localhost:3000")
-})
-
-========
-  res.json({ username: user.username, role: user.role })
-})
-
->>>>>>>> main:backend/server.js
 // GET report download (generates a simple CSV)
 app.get("/api/reports/download/:type", (req, res) => {
   const type = req.params.type
   let csv = ""
   let filename = ""
-<<<<<<<< HEAD:server/server.js
-
-========
->>>>>>>> main:backend/server.js
   if (type === "maintenance") {
     filename = "maintenance_report.csv"
     csv = "ID,Asset,Detail,Status,Priority,Due Date,Outcome\n"
@@ -152,20 +128,12 @@ app.get("/api/reports/download/:type", (req, res) => {
       csv += [o.id, o.asset, o.detail, o.status, o.created_at].join(",") + "\n"
     })
   }
-<<<<<<<< HEAD:server/server.js
-
-========
->>>>>>>> main:backend/server.js
   res.setHeader("Content-Type", "text/csv")
   res.setHeader("Content-Disposition", "attachment; filename=" + filename)
   res.send(csv)
 })
 
-<<<<<<<< HEAD:server/server.js
-// GET latest reading per equipment (for "live" current values)
-========
 // GET latest reading per equipment (uses latest timestamp in DB as reference)
->>>>>>>> main:backend/server.js
 app.get("/api/sensors/latest", (req, res) => {
   const equipment = ["AC-001", "GEN-001", "PUMP-001", "AC-002", "LIFT-001"]
   const results = equipment.map((id) => {
@@ -177,22 +145,15 @@ app.get("/api/sensors/latest", (req, res) => {
   res.json(results)
 })
 
-<<<<<<<< HEAD:server/server.js
-// GET aggregated trend data for charts (hourly averages)
-========
 // GET aggregated trend data for charts (hourly averages, uses latest DB timestamp)
->>>>>>>> main:backend/server.js
 app.get("/api/sensors/trend/:equipment_id", (req, res) => {
   const { equipment_id } = req.params
   const hours = parseInt(req.query.hours) || 24
 
-<<<<<<<< HEAD:server/server.js
-========
   const latestRow = db.prepare("SELECT MAX(timestamp) as latest FROM sensor_readings WHERE equipment_id = ?").get(equipment_id)
   if (!latestRow || !latestRow.latest) return res.json([])
   const latest = latestRow.latest
 
->>>>>>>> main:backend/server.js
   const rows = db.prepare(`
     SELECT
       strftime('%Y-%m-%dT%H:00:00', timestamp) as hour,
@@ -202,40 +163,20 @@ app.get("/api/sensors/trend/:equipment_id", (req, res) => {
       COUNT(*) as reading_count
     FROM sensor_readings
     WHERE equipment_id = ?
-<<<<<<<< HEAD:server/server.js
-      AND timestamp >= datetime('now', ? || ' hours')
-    GROUP BY strftime('%Y-%m-%dT%H:00:00', timestamp)
-    ORDER BY hour ASC
-  `).all(equipment_id, "-" + hours)
-========
       AND timestamp >= datetime(?, '-' || ? || ' hours')
       AND timestamp <= ?
     GROUP BY strftime('%Y-%m-%dT%H:00:00', timestamp)
     ORDER BY hour ASC
   `).all(equipment_id, latest, hours, latest)
->>>>>>>> main:backend/server.js
 
   res.json(rows)
 })
 
-<<<<<<<< HEAD:server/server.js
-// GET aggregated trend for ALL equipment (for Live Monitoring charts)
-========
 // GET aggregated trend for ALL equipment (uses latest DB timestamp as reference)
->>>>>>>> main:backend/server.js
 app.get("/api/sensors/trend-all", (req, res) => {
   const hours = parseInt(req.query.hours) || 1
   const equipment = ["AC-001", "GEN-001", "PUMP-001", "AC-002", "LIFT-001"]
 
-<<<<<<<< HEAD:server/server.js
-  const timePoints = db.prepare(`
-    SELECT DISTINCT strftime('%Y-%m-%dT%H:%M:00', timestamp, 'start of minute') as minute
-    FROM sensor_readings
-    WHERE timestamp >= datetime('now', ? || ' hours')
-    ORDER BY minute ASC
-    LIMIT 60
-  `).all("-" + hours).map((r) => r.minute)
-========
   const latestRow = db.prepare("SELECT MAX(timestamp) as latest FROM sensor_readings").get()
   if (!latestRow || !latestRow.latest) return res.json([])
   const latest = latestRow.latest
@@ -248,7 +189,6 @@ app.get("/api/sensors/trend-all", (req, res) => {
     ORDER BY minute ASC
     LIMIT 60
   `).all(latest, hours, latest).map((r) => r.minute)
->>>>>>>> main:backend/server.js
 
   const result = timePoints.map((tp) => {
     const point = { time: tp.substring(11, 16) }
@@ -273,11 +213,8 @@ app.get("/api/sensors/trend-all", (req, res) => {
   })
 
   res.json(result)
-<<<<<<<< HEAD:server/server.js
-========
 })
 
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000")
->>>>>>>> main:backend/server.js
 })

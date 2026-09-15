@@ -2,17 +2,19 @@ import { Home, HardDrive, Activity, BarChart3, Bell, Wrench, FileText, Settings,
 import logo from "../assets/images/logo.png"
 
 const navigationItems = [
-  { id: "dashboard", label: "Dashboard", icon: Home },
-  { id: "equipment", label: "Equipment", icon: HardDrive },
-  { id: "monitoring", label: "Live Monitoring", icon: Activity },
-  { id: "predictions", label: "Predictions", icon: BarChart3 },
-  { id: "alerts", label: "Alerts", icon: Bell },
-  { id: "maintenance", label: "Maintenance", icon: Wrench },
-  { id: "reports", label: "Reports", icon: FileText },
-  { id: "settings", label: "Settings", icon: Settings }
+  { id: "dashboard", label: "Dashboard", icon: Home, roles: ["manager", "technician", "executive", "admin"] },
+  { id: "equipment", label: "Equipment", icon: HardDrive, roles: ["manager", "technician", "admin"] },
+  { id: "monitoring", label: "Live Monitoring", icon: Activity, roles: ["manager", "technician", "admin"] },
+  { id: "predictions", label: "Predictions", icon: BarChart3, roles: ["manager", "admin"] },
+  { id: "alerts", label: "Alerts", icon: Bell, roles: ["manager", "executive", "admin"] },
+  { id: "maintenance", label: "Maintenance", icon: Wrench, roles: ["manager", "technician", "admin"] },
+  { id: "reports", label: "Reports", icon: FileText, roles: ["manager", "executive", "admin"] },
+  { id: "settings", label: "Settings", icon: Settings, roles: ["manager", "executive", "admin"] }
 ]
 
-function Sidebar({ currentSection, onNavigate, onLogout, isOpen, onClose }) {
+function Sidebar({ currentSection, currentUser, onNavigate, onLogout, isOpen, onClose }) {
+  const visibleItems = navigationItems.filter((item) => item.roles.includes(currentUser?.role))
+
   return (
     <div className={`sidebar ${isOpen ? "open" : ""}`}>
       <div className="brand">
@@ -24,14 +26,13 @@ function Sidebar({ currentSection, onNavigate, onLogout, isOpen, onClose }) {
       </div>
 
       <div className="sidebar-nav">
-        {navigationItems.map((item) => (
+        {visibleItems.map((item) => (
           <button
             key={item.id}
             type="button"
             className={currentSection === item.id ? "active" : ""}
             onClick={() => {
               onNavigate?.(item.id)
-              onClose?.()
             }}
           >
             <span className="nav-icon"><item.icon size={16} /></span>

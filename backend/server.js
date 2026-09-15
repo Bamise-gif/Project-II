@@ -101,6 +101,7 @@ app.post("/api/login", (req, res) => {
     { expiresIn: "24h" }
   )
   res.json({ username: user.username, role: user.role, token })
+  res.json({ username: user.username, role: user.role, token })
 })
 
 // GET report download
