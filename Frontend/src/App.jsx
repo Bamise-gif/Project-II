@@ -19,7 +19,7 @@ const equipmentMeta = [
 ]
 
 function App() {
-  const [currentUser, setCurrentUser] = useState({ username: "admin", role: "admin" })
+  const [currentUser, setCurrentUser] = useState(null)
   const [currentSection, setCurrentSection] = useState("dashboard")
   const [selectedEquipment, setSelectedEquipment] = useState(null)
   const [workOrders, setWorkOrders] = useState([])
@@ -223,9 +223,13 @@ function App() {
             </button>
           ))}
           <button
-            onClick={() => setCurrentUser(null)}
-            style={{ color: "#DC2626", marginTop: "8px" }}
-          >
+    onClick={() => {
+      localStorage.removeItem("campuspulse_token")
+      localStorage.removeItem("campuspulse_user")
+      setCurrentUser(null)
+    }}
+    style={{ color: "#DC2626", marginTop: "8px" }}
+  >
             <span className="nav-icon">🚪</span>
             Logout
           </button>

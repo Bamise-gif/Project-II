@@ -19,6 +19,9 @@ function LoginScreen({ onLogin }) {
         return response.json()
       })
       .then((data) => {
+        setLoading(false)
+        localStorage.setItem("campuspulse_token", data.token)
+        localStorage.setItem("campuspulse_user", JSON.stringify({ username: data.username, role: data.role }))
         onLogin(data)
       })
       .catch(() => {
